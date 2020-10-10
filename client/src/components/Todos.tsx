@@ -56,7 +56,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         newTodoName: ''
       })
     } catch {
-      alert('Todo creation failed')
+      alert('Receipe creation failed')
     }
   }
 
@@ -67,7 +67,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         todos: this.state.todos.filter(todo => todo.todoId != todoId)
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('Receipe deletion failed')
     }
   }
 
@@ -85,7 +85,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         })
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('Receipe deletion failed')
     }
   }
 
@@ -97,14 +97,14 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         loadingTodos: false
       })
     } catch (e) {
-      alert(`Failed to fetch todos: ${e.message}`)
+      alert(`Failed to fetch Receipes: ${e.message}`)
     }
   }
 
   render() {
     return (
       <div>
-        <Header as="h1">TODOs</Header>
+        <Header as="h1">Receipes</Header>
 
         {this.renderCreateTodoInput()}
 
@@ -122,12 +122,12 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New task',
+              content: 'Add receipe',
               onClick: this.onTodoCreate
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Name of your receipe"
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -150,7 +150,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading TODOs
+          Loading Receipes
         </Loader>
       </Grid.Row>
     )
@@ -196,6 +196,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Image src={todo.attachmentUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
+
+              </Grid.Column>
+                Receipe Description
+              <Grid.Column width={16}>
+
                 <Divider />
               </Grid.Column>
             </Grid.Row>

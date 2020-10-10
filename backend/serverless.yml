@@ -1,5 +1,5 @@
 service:
-  name: serverless-todo-app
+  name: receipe-app
 
 plugins:
   - serverless-webpack
@@ -21,9 +21,9 @@ provider:
     apiGateway: true
 
   environment:
-    TODOS_TABLE: Todos-a-${self:provider.stage}
-    TODOS_BY_USER_INDEX: TodosByUserIndex
-    S3_BUCKET: todos-s3-${self:provider.stage}
+    RECEIPES_TABLE: Receipes-a-${self:provider.stage}
+    RECEIPES_BY_USER_INDEX: ReceipesByUserIndex
+    S3_BUCKET: Receipes-s3-${self:provider.stage}
 
   iamRoleStatements:
     - Effect: Allow
@@ -38,15 +38,15 @@ custom:
     api:
       info:
         version: v1.0.0
-        title: Todo Item API
-        description: Serverless Todo application
+        title: Receipe Item API
+        description: Serverless Receipe application
     models:
-      - name: TodoRequest
+      - name: ReceipeRequest
         contentType: application/json
-        schema: ${file(models/create-todo-request.json)}
-      - name: UpdateTodoRequest
+        schema: ${file(models/create-receipe-request.json)}
+      - name: UpdateReceipeRequest
         contentType: application/json
-        schema: ${file(models/update-todo-request.json)}
+        schema: ${file(models/update-receipe-request.json)}
 
 functions:
 
@@ -54,19 +54,47 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetReceipes:
+    handler: src/lambda/http/getReceipes.handler
     events:
       - http:
           method: get
-          path: todos
+          path: receipes
           cors: true
           auth: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_BY_USER_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}/index/${self:provider.environment.RECEIPES_BY_USER_INDEX}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
+  GetReceipesAll:
+    handler: src/lambda/http/getReceipesAll.handler
+    events:
+      - http:
+          method: get
+          path: receipesall
+          cors: true
+          auth: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}/index/${self:provider.environment.RECEIPES_BY_USER_INDEX}
       - Effect: Allow
         Action:
           - xray:GetSamplingRules
@@ -84,25 +112,25 @@ functions:
 
   # TODO: Configure this function
   #GetTodos:
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateReceipe:
+    handler: src/lambda/http/createReceipe.handler
     events:
       - http:
           method: post
-          path: todos
+          path: receipes
           cors: true
           auth: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: Create a new Todo
-            description: Create a new Todo
+            summary: Create a new Receipe
+            description: Create a new Receipe
             requestModels:
-              'application/json': TodoRequest
+              'application/json': ReceipeRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}
       - Effect: Allow
         Action:
           - xray:GetSamplingRules
@@ -119,26 +147,26 @@ functions:
           - "*"
 
   # TODO: Configure this function
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdateReceipe:
+    handler: src/lambda/http/updateReceipe.handler
     events:
       - http:
           method: patch
-          path: todos/{todoId}
+          path: receipes/{receipeId}
           cors: true
           auth: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
-            summary: update  Todo
-            description: update new Todo
+            summary: update  receipe
+            description: update new receipe
             requestModels:
-              'application/json': UpdateTodoRequest
+              'application/json': UpdateReceipeRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
           - dynamodb:GetItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}
       - Effect: Allow
         Action:
           - xray:GetSamplingRules
@@ -154,13 +182,13 @@ functions:
         Resource:
           - "*"
 
-  # TODO: Configure this function
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  # Receipe: Configure this function
+  DeleteReceipe:
+    handler: src/lambda/http/deleteReceipe.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: receipes/{receipeId}
           cors: true
           auth: Auth
     iamRoleStatements:
@@ -168,7 +196,7 @@ functions:
         Action:
           - dynamodb:DeleteItem
           - dynamodb:GetItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}
       - Effect: Allow
         Action:
           - xray:GetSamplingRules
@@ -184,13 +212,13 @@ functions:
         Resource:
           - "*"
 
-  # TODO: Configure this function
+  # receipe: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: receipes/{receipeId}/attachment
           cors: true
           auth: Auth
           reqValidatorName: RequestBodyValidator
@@ -203,7 +231,7 @@ functions:
         Action:
           - dynamodb:UpdateItem
           - dynamodb:GetItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECEIPES_TABLE}
       - Effect: Allow
         Action:
           - xray:GetSamplingRules
@@ -221,12 +249,12 @@ functions:
 
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
-    TodosTable:
+    # receipe: Add any necessary AWS resources
+    ReceipesTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: todoId
+          - AttributeName: receipeId
             AttributeType: S
           - AttributeName: userId
             AttributeType: S
@@ -235,12 +263,12 @@ resources:
         KeySchema:
           - AttributeName: userId             # <<==
             KeyType: HASH
-          - AttributeName: todoId             # <<==
+          - AttributeName: receipeId             # <<==
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.RECEIPES_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.TODOS_BY_USER_INDEX}
+          - IndexName: ${self:provider.environment.RECEIPES_BY_USER_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH

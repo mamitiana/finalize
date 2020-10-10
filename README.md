@@ -1,14 +1,16 @@
-# Implement Serverless TODO
+# Implement Serverless to add Receipe
 
-Implement a simple TODO application using AWS Lambda and Serverless framework.
+Implement a simple Receipe managment application using AWS Lambda and Serverless framework.
 
 ## Specification
 
 ### Functionality
-- A user of the web application can use the interface to create, delete and complete a TODO item. ok
-- A user of the web interface can click on a "pencil" button, then select and upload a file. A file should appear in the list of TODO items on the home page. ok
-- If you log out from a current user and log in as a different user, the application should not show TODO items created by the first account. ok
-- A user needs to authenticate in order to use an application. ok
+- A user can view a limited list of existing receipe
+- A user must loggin to add receipe
+- A user of the web application can use the interface to create, delete and complete Receipe.
+- A user of the web interface can click on a "pencil" button, to edit selected Receipe to add image or steps
+- If you log out from a current user and log in as a different user, the application will show receipe  created by the current account on py receipes.
+- A user needs to authenticate in order to use an application.
 
 ### code Base
 - All resources needed by an application are defined in the "serverless.yml". A developer does not need to create them manually using AWS console. ok
