@@ -23,7 +23,7 @@ provider:
   environment:
     RECEIPES_TABLE: Receipes-a-${self:provider.stage}
     RECEIPES_BY_USER_INDEX: ReceipesByUserIndex
-    S3_BUCKET: Receipes-s3-${self:provider.stage}
+    S3_BUCKET: receipes-s3-a-${self:provider.stage}
 
   iamRoleStatements:
     - Effect: Allow

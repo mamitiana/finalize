@@ -111,7 +111,7 @@ export class ReceipeAccess {
         userId,
         receipeId
       },
-      UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done, desciption = :desciption',
+      UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done', // desciption = :desciption
       ExpressionAttributeNames: {
         "#name": "name"
       },
@@ -119,7 +119,7 @@ export class ReceipeAccess {
         ":name": receipeUpdate.name,
         ":dueDate": receipeUpdate.dueDate,
         ":done": receipeUpdate.done,
-        ":desciption": receipeUpdate.description
+        ":desciption": "" //receipeUpdate.description
       }
     }).promise()   
   }

@@ -12,8 +12,12 @@
     "dueDate": {
      "type": "string",
      "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
-    }
+    },
+    "description": {
+      "type": "string",
+      "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+     }
   },
   "required": ["name"],
-  "additionalProperties": false
+  "additionalProperties": true
 }

@@ -10,6 +10,7 @@
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.27.0",
+    "serverless": "^2.3.0",
     "serverless-plugin-existing-s3": "^2.4.0",
     "serverless-plugin-tracing": "^2.0.0",
     "source-map-support": "^0.5.11",
